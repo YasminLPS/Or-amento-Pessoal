@@ -1,70 +1,74 @@
-class BD{
-    constructor(){
-        let id = localStorage.getItem('id');
+class Despesa {
+	constructor(ano, mes, dia, tipo, descricao, valor) {
+		this.ano = ano
+		this.mes = mes
+		this.dia = dia
+		this.tipo = tipo
+		this.descricao = descricao
+		this.valor = valor
+	}
 
-        if(id === null){
-            localStorage.setItem('id', 0)
-        }
-    }
-
-    getProximoID(){
-        let proximoID = localStorage.getItem('id');
-        return parseInt(proximoID) + 1;
-    }
-
-    gravar(d){
-        let id = this.getProximoID();
-        localStorage.setItem(id, JSON.stringify(d))
-        localStorage.setItem('id', id)
-    }
-
-
+	validarDados() {
+		for(let i in this) {
+			if(this[i] == undefined || this[i] == '' || this[i] == null) {
+				return false
+			}
+		}
+		return true
+	}
 }
 
-let bd = new BD();
+class Bd {
 
+	constructor() {
+		let id = localStorage.getItem('id')
 
-class Despesa{
-    constructor(ano, mes, dia, tipo, descricao, valor){
-        this.ano = ano;
-        this.mes = mes;
-        this.dia = dia;
-        this.tipo = tipo;
-        this.descricao = descricao;
-        this.valor = valor;
-    }
+		if(id === null) {
+			localStorage.setItem('id', 0)
+		}
+	}
 
-    validarDados(){
-        for(let i in this){
-            if(this[i] === undefined || this[i] === '' || this[i] === null){
-                return false;
-            }
-        }
-        return true;
-    }
+	getProximoId() {
+		let proximoId = localStorage.getItem('id')
+		return parseInt(proximoId) + 1
+	}
+
+	gravar(d) {
+		let id = this.getProximoId()
+
+		localStorage.setItem(id, JSON.stringify(d))
+
+		localStorage.setItem('id', id)
+	}
 }
 
-function cadastrarDespesa(){
-    let ano = document.getElementById('ano');
-    let mes = document.getElementById('mes');
-    let dia = document.getElementById('dia');
-    let tipo = document.getElementById('tipo');
-    let descricao = document.getElementById('descricao');
-    let valor = document.getElementById('valor');
-    
-    
-    let despesa = new Despesa(
-        ano.value, mes.value, 
-        dia.value, tipo.value, 
-        descricao.value, valor.value
-    );
+let bd = new Bd()
 
-    if(despesa.validarDados()){
-    bd.gravar(despesa);
 
-    }else{
-        //dialog de erro
-        
-    }
+function cadastrarDespesa() {
+
+	let ano = document.getElementById('ano')
+	let mes = document.getElementById('mes')
+	let dia = document.getElementById('dia')
+	let tipo = document.getElementById('tipo')
+	let descricao = document.getElementById('descricao')
+	let valor = document.getElementById('valor')
+
+	let despesa = new Despesa(
+		ano.value, 
+		mes.value, 
+		dia.value, 
+		tipo.value, 
+		descricao.value,
+		valor.value
+	)
+	
+	if(despesa.validarDados()) {
+		bd.gravar(despesa)
+		//dialog de sucesso
+		$('#sucessoGravacao').modal('show') 
+	} else {
+		//dialog de sucesso
+		$('#erroGravacao').modal('show') 
+	}
 }
-
