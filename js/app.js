@@ -1,0 +1,3 @@
+function cadastrarDespesa(){
+    alert('OK');
+}
