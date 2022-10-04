@@ -33,6 +33,15 @@ class Despesa{
         this.descricao = descricao;
         this.valor = valor;
     }
+
+    validarDados(){
+        for(let i in this){
+            if(this[i] === undefined || this[i] === '' || this[i] === null){
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 function cadastrarDespesa(){
@@ -49,7 +58,13 @@ function cadastrarDespesa(){
         dia.value, tipo.value, 
         descricao.value, valor.value
     );
-    
+
+    if(despesa.validarDados()){
     bd.gravar(despesa);
+
+    }else{
+        //dialog de erro
+        
+    }
 }
 
