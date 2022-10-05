@@ -109,5 +109,41 @@ function carregarListas(){
 	let despesas = Array()
 	despesas = bd.recuperRegistros();
 
-	console.log(despesas);
+	//selecionando o tbody
+	let listaDespesas = document.getElementById('listaDespesas');
+
+	//percorrer o array despesas
+	despesas.forEach(function(d){
+
+
+		//criando o tr -Linha-
+		let linha = listaDespesas.insertRow();
+
+		//criar os td -colunas-
+		linha.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano}`;
+
+		//ajustar o tipo
+		switch(parseInt(d.tipo)){
+			case 1: 
+				d.tipo = 'Alimentação';
+			break
+			case 2: 
+				d.tipo = 'Educação';
+			break
+			case 3: 
+				d.tipo = 'Lazer';
+			break
+			case 4: 
+				d.tipo = 'Saúde';
+			break
+			case 5: 
+				d.tipo = 'Transporte';
+			break
+		}
+
+		linha.insertCell(1).innerHTML = d.tipo;
+		linha.insertCell(2).innerHTML = d.descricao;
+		linha.insertCell(3).innerHTML = `R$ ${d.valor}`;
+	}
+	);
 }
