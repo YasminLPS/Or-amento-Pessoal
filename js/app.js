@@ -55,6 +55,7 @@ class Bd {
 		if(despesa === null){
 			continue;
 		}
+		despesa.id = i;
 		despesas.push(despesa);
 		}
 
@@ -90,6 +91,10 @@ class Bd {
 			despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor);
 		}
 		return despesasFiltradas;
+	}
+
+	remover(id){
+		localStorage.removeItem(id);
 	}
 	
 }
@@ -185,8 +190,34 @@ function carregarListas(despesas = Array(), filtro = false){
 		linha.insertCell(1).innerHTML = d.tipo;
 		linha.insertCell(2).innerHTML = d.descricao;
 		linha.insertCell(3).innerHTML = `R$ ${d.valor}`;
+
+		//botao exclusao
+		let btn = document.createElement("button");
+		btn.className = 'btn btn-danger';
+		btn.innerHTML= '<i class="fas fa-times"></i>';
+
+		let btn_excluir = document.getElementById('modal_excluir');
+		btn_excluir.id = `id_despesa_${d.id}`;
+		btn.onclick = function(){
+			//remover despesa
+				document.getElementById('modalexcluir_titulo').innerHTML = 'Excluir';
+				document.getElementById('modalexcluir_div_titulo').className = 'modal-header text-danger';
+				document.getElementById('modalexcluir_conteudo').innerHTML = 'Deseja realmente remover essa despesa?';
+				document.getElementById('modalexcluir_voltar').className = 'btn btn-secondary';
+	
+				//dialog de pergunta
+				$('#modalExcluirDespesa').modal('show') 
+		}
+		btn_excluir.onclick = function(){
+			let id = this.id.replace('id_despesa_', '')
+			bd.remover(id);
+			window.location.reload();
+		}
+		linha.insertCell(4).append(btn);
 	}
 	);
+
+	
 }
 
 function pesquisarDespesa(){
